@@ -1,0 +1,72 @@
+
+# Define the services (containers) that make up your application stack.
+services:
+  # The time-series database service for storing crypto prices.
+  influxdb:
+    image: influxdb:2.7 # Use a specific version of the official InfluxDB image for stability.
+    container_name: influxdb
+    # Environment variables are used to initialize the InfluxDB instance on first run.
+    # IMPORTANT: Change these default credentials for a production environment.
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=my-user
+      - DOCKER_INFLUXDB_INIT_PASSWORD=my-super-secret-password
+      - DOCKER_INFLUXDB_INIT_ORG=my-org
+      - DOCKER_INFLUXDB_INIT_BUCKET=crypto-prices
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-super-secret-token
+    ports:
+      # Expose the InfluxDB API port (8086) to your local machine.
+      - "8086:8086"
+    volumes:
+      # Persist InfluxDB data on the host machine to prevent data loss on container restart.
+      - influxdb_data:/var/lib/influxdb2
+    networks:
+      # Connect this service to our custom network.
+      - crypto-net
+    restart: unless-stopped
+
+  # The backend service to fetch, process, and predict crypto prices.
+  backend:
+    build:
+      context: ./backend # Specifies that the build context is the 'backend' directory.
+      dockerfile: Dockerfile
+    container_name: backend
+    # The backend service will not start until the influxdb service is healthy.
+    depends_on:
+      - influxdb
+    environment:
+      # Pass InfluxDB connection details to the backend service.
+      # The backend will use these to connect to the InfluxDB container.
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_TOKEN=my-super-secret-token
+      - INFLUXDB_ORG=my-org
+      - INFLUXDB_BUCKET=crypto-prices
+    networks:
+      - crypto-net
+    restart: on-failure:5 # Restart the service if it fails, with a maximum of 5 retries.
+
+  # The dashboard service for visualizing data.
+  grafana:
+    image: grafana/grafana:10.1.1 # Use a specific version of the official Grafana image.
+    container_name: grafana
+    ports:
+      # Expose the Grafana web UI port (3000) to your local machine.
+      - "3000:3000"
+    volumes:
+      # Persist Grafana data (dashboards, data sources) on the host machine.
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - influxdb # Grafana depends on InfluxDB to be available.
+    networks:
+      - crypto-net
+    restart: unless-stopped
+
+# Define the custom network for inter-service communication.
+networks:
+  crypto-net:
+    driver: bridge # Use the default bridge driver.
+
+# Define the named volumes for data persistence.
+volumes:
+  influxdb_data: # Volume for InfluxDB data.
+  grafana_data:  # Volume for Grafana data.

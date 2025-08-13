@@ -1,0 +1,18 @@
+# /grafana/provisioning/dashboards/dashboard.yml
+
+# The 'apiVersion' and 'providers' keys are required by Grafana.
+apiVersion: 1
+
+providers:
+  # A unique name for the dashboard provider.
+  - name: 'Crypto Dashboard Provider'
+    # The type of provider. 'file' means Grafana will look for files on disk.
+    type: file
+    # Set to false to prevent users from deleting the provisioned dashboards from the UI.
+    disableDeletion: false
+    # Set to true to allow users to edit the provisioned dashboards from the UI.
+    editable: true
+    # The folder where Grafana will look for dashboard JSON files.
+    # This path is relative to the Grafana container's filesystem.
+    options:
+      path: /etc/grafana/provisioning/dashboards

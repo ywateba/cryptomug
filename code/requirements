@@ -1,2 +1,13 @@
 boto3
 requests
+
+# Library to interact with InfluxDB v2
+influxdb-client
+
+# Library for making HTTP requests to crypto APIs
+requests
+
+# Libraries for data analysis and prediction
+pandas
+scikit-learn
+# or tensorflow, or prophet, etc.
