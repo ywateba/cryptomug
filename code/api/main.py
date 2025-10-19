@@ -22,7 +22,7 @@ app = FastAPI(
 
 app.include_router(providers.router)
 app.include_router(tokens.router)
-app.include_router(prices.router)
+app.include_router(prices.router)155
 
 if __name__ == "__main__":
     import uvicorn
