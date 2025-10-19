@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+SQLAlchemy
+psycopg2-binary
+python-json-logger
+pydantic<2
+influxdb-client
