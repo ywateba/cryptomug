@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, JSON, Boolean
-from api.core.database import Base
+from api.db.database import Base
 
 class Provider(Base):
     """

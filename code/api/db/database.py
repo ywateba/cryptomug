@@ -1,14 +1,13 @@
-import logging
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from api.config import DATABASE_URL
 
-logger = logging.getLogger("CryptoMugAPI")
+# It's best practice to use environment variables for database credentials.
+# Example: "postgresql://user:password@host:port/dbname"
+SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:password@postgres/cryptomug_db")
 
-logger.info("Setting up database connection...")
-
-engine = create_engine(DATABASE_URL)
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

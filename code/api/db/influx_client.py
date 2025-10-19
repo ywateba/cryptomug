@@ -1,5 +1,6 @@
 import logging
-from influxdb_client import InfluxDBClient, Point
+from influxdb_client.client.influxdb_client import InfluxDBClient
+from influxdb_client.client.write.point import Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 from typing import List
 from api.config import INFLUXDB_URL, INFLUXDB_TOKEN, INFLUXDB_ORG, INFLUXDB_BUCKET
@@ -25,6 +26,7 @@ class InfluxClient:
             return
         logger.info(f"Writing {len(points)} price points to InfluxDB bucket '{INFLUXDB_BUCKET}'.")
         self.write_api.write(bucket=INFLUXDB_BUCKET, org=INFLUXDB_ORG, record=points)
+        logger.info(f"prices added")
 
 # Create a single instance to be used across the application
-influx_client = InfluxClient()
+single_client = InfluxClient()

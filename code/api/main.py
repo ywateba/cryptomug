@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 import logging
 
-from api.core import models
-from api.core.database import engine
+from api.db import models
+from api.db.database import engine
 from api.config import setup_logging
 from api.routers import providers, tokens, prices # Assuming these are now in a 'routers' sub-directory
 

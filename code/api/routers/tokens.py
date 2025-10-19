@@ -4,10 +4,9 @@ from sqlalchemy.orm import Session
 import logging
 
 
-
-from api.core import schemas
-from api.core.database import get_db
-from api.db import crud
+from  api.core import schemas
+from  api.db.database import get_db
+from  api.db import crud
 
 
 router = APIRouter(

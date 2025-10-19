@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 import logging
 
 from api.core import schemas
-from api.core.database import get_db
+from api.db.database import get_db
 from api.db import crud
 
 
@@ -18,7 +18,7 @@ logger = logging.getLogger("CryptoMugAPI")
 @router.post("/", response_model=schemas.Provider, status_code=status.HTTP_201_CREATED)
 def create_provider(provider: schemas.ProviderCreate, db: Session = Depends(get_db)):
     logger.info(f"Received request to create provider: {provider.name}")
-    db_provider = crud.get_provider_by_name(db, name=provider.name)
+    db_provider = crud.get_provider_by_name(db, provider_name=provider.name)
     if db_provider:
         logger.warning(f"Provider '{provider.name}' already exists.")
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Provider with this name already exists")

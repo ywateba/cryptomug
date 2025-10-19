@@ -1,0 +1,18 @@
+{
+    // --- Python General Settings ---
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.extraPaths": [
+        "./code"
+    ],
+    "python.analysis.autoImportCompletions": true,
+    // --- Linter and Formatter Settings ---
+    // Enable format on save for a consistent codebase
+    "editor.formatOnSave": true,
+    "python.formatting.provider": "black",
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    // --- Dockerfile Settings ---
+    "[dockerfile]": {
+        "editor.defaultFormatter": "ms-azure-tools.vscode-docker"
+    }
+}
