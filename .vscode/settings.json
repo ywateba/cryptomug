@@ -2,7 +2,9 @@
     // --- Python General Settings ---
     "python.analysis.typeCheckingMode": "basic",
     "python.analysis.extraPaths": [
-        "./code"
+      
+        "./src/main/api",
+        "./src/test/apitest"
     ],
     "python.analysis.autoImportCompletions": true,
     // --- Linter and Formatter Settings ---
