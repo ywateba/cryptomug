@@ -3,7 +3,7 @@ from api.db import models
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import Session
 from api.core import schemas
-from api.db.models import Provider, Token
+from api.db.models import Token
 
 
 
