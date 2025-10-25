@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:14-alpine
@@ -32,9 +30,9 @@ services:
     restart: unless-stopped
 
   api:
-    context:
-      build: ./code
-      Dockerfile: ./code/api/Dockerfile
+    build:
+      context: ./src
+      dockerfile: ../Dockerfile
     image: cryptomug_api
     container_name: cryptomug_api
     ports:
