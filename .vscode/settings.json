@@ -3,8 +3,8 @@
     "python.analysis.typeCheckingMode": "basic",
     "python.analysis.extraPaths": [
       
-        "./src/main/api",
-        "./src/test/apitest"
+        "./app-api/src/api",
+        "./app-api/src/tests/apitest"
     ],
     "python.analysis.autoImportCompletions": true,
     // --- Linter and Formatter Settings ---

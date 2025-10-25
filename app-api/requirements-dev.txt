@@ -1,0 +1,6 @@
+tox
+pytest
+pytest-cov
+httpx  # A client for making requests to the API in tests
+python-json-logger # From your config.py
+behave

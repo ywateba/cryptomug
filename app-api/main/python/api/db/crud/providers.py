@@ -34,10 +34,10 @@ def create_provider(db: Session, provider: schemas.ProviderCreate):
     db.refresh(db_provider)
     return db_provider
 
-def set_default_provider(db: Session, provider: schemas.Provider):
-    logger.info(f"Setting provider {provider.name} as default.")
+def set_default_provider(db: Session, provider_name: str):
+    logger.info(f"Setting provider {provider_name} as default.")
 
-    db_provider = get_provider_by_name(db, provider.name)
+    db_provider = get_provider_by_name(db, provider_name)
 
     # Unset current default
     current_default = get_default_provider(db)
@@ -52,15 +52,18 @@ def set_default_provider(db: Session, provider: schemas.Provider):
     db.refresh(db_provider)
     return db_provider
 
-def update_provider(db: Session, db_provider: Provider, provider_update: schemas.ProviderUpdate):
+def update_provider(db: Session, provider_name: str, provider_update: schemas.ProviderUpdate):
 
-    update_data = provider_update.dict(exclude_unset=True)
-    logger.info(f"Updating provider {db_provider.name} with data: {update_data}")
-    for key, value in update_data.items():
-        setattr(db_provider, key, value)
-    db.commit()
-    db.refresh(db_provider)
-    return db_provider
+    update_data = provider_update.model_dump(exclude_unset=True)
+    db_provider = get_provider_by_name(db, provider_name)
+    if db_provider:
+        logger.info(f"Updating provider {db_provider.name} with data: {update_data}")
+        for key, value in update_data.items():
+            setattr(db_provider, key, value)
+        db.commit()
+        db.refresh(db_provider)
+        return db_provider
+    
 
 def delete_provider(db: Session, provider_name):
     logger.info(f"Deleting provider: {provider_name}")
