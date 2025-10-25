@@ -3,7 +3,7 @@ from typing import Optional
 from sqlalchemy.orm import Session
 import logging
 
-from api.db import crud
+from api.db.crud import providers
 from  api.db.database import get_db
 from  api.db import influx_service
 
@@ -26,14 +26,14 @@ def fetch_prices(provider_id: Optional[int] = None, db: Session = Depends(get_db
     logger.info(f"Received request to fetch prices. Provider ID: {provider_id or 'Default'}")
 
     if not provider_id:
-        provider = crud.get_default_provider(db)
+        provider = providers.get_default_provider(db)
         if not provider:
             raise ValueError("No default provider is set.")
 
     logger.info(f"Using provider '{provider.name}' to fetch prices.")
 
     # 2. Get all enabled tokens
-    enabled_tokens = crud.get_enabled_tokens(db)
+    enabled_tokens = providers.get_enabled_tokens(db)
     if enabled_tokens:
         try:
             return influx_service.fetch_prices(provider,enabled_tokens)
