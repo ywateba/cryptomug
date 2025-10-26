@@ -53,7 +53,7 @@ def test_read_enabled_tokens(test_client: TestClient, db_session: Session):
     assert response.status_code == 200
     data = response.json()
     assert len(data) == 1
-    assert data[0] == "bitcoin"
+    assert data[0]["id"] == "bitcoin"
 
 def test_read_token(test_client: TestClient, db_session: Session):
     """Test reading a single token by its ID."""

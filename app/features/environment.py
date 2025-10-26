@@ -3,8 +3,8 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from src.main import app
-from src.database import get_db, Base
+from api.main import app
+from api.db.database import get_db, Base
 
 # Use the test database URL from the environment variables set in tox.ini
 SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")

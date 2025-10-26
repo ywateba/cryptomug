@@ -1,3 +1,6 @@
 **/__pycache__
 ./backend/data
 ./backend/data/*
+./app/.coverage
+./app/.tox
+./app/.commons.egg-info

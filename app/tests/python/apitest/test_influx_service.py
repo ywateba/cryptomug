@@ -13,7 +13,7 @@ class TestInfluxService(unittest.TestCase):
         """Test the price fetching simulation logic."""
         # Arrange
         mock_uniform.return_value = 12345.6789
-        provider = schemas.Provider(id=1, name="SimProvider", api_url="", auth_method="none", is_default=True)
+        provider = schemas.Provider(id="binance", name="Binance", api_url="", auth_method="none", is_default=True)
         tokens = ["bitcoin", "ethereum"]
 
         # Act

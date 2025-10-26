@@ -42,7 +42,9 @@ def test_set_default_provider(db_session: Session):
     db_session.add_all([p1, p2])
     db_session.commit()
 
-    providers.set_default_provider(db_session, provider_name="P2")
+    # Fetch the provider object to pass to the function
+    provider_to_set = providers.get_provider_by_name(db_session, "P2")
+    providers.set_default_provider(db_session, provider=provider_to_set)
     
     db_session.refresh(p1)
     db_session.refresh(p2)
@@ -56,7 +58,7 @@ def test_update_provider(db_session: Session):
     db_session.commit()
 
     update_schema = schemas.ProviderUpdate(api_url="updated_url")
-    updated_provider = providers.update_provider(db_session, "Original", update_schema)
+    updated_provider = providers.update_provider(db_session, provider, update_schema)
 
     assert getattr(updated_provider, "api_url") == "updated_url"
     assert getattr(updated_provider, "name") == "Original"
@@ -67,7 +69,8 @@ def test_delete_provider(db_session: Session):
     db_session.add(provider)
     db_session.commit()
 
-    providers.delete_provider(db_session, "ToDelete")
+    provider_to_delete = providers.get_provider_by_name(db_session, "ToDelete")
+    providers.delete_provider(db_session, provider_to_delete)
     assert db_session.query(models.Provider).count() == 0
 
 # --- Token CRUD Tests ---
@@ -88,7 +91,8 @@ def test_get_enabled_tokens(db_session: Session):
     db_session.commit()
 
     enabled = tokens.get_enabled_tokens(db_session)
-    assert set(enabled) == {"btc", "ada"}
+    enabled_ids = {token.id for token in enabled}
+    assert enabled_ids == {"btc", "ada"}
 
 def test_update_token(db_session: Session):
     token = models.Token(id="btc", name="Bitcoin", description="Old")
