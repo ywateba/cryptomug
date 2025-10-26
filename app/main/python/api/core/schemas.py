@@ -5,7 +5,7 @@ from typing import Dict, Optional, List
 
 class TokenBase(BaseModel):
     id: str
-    name: Optional[str] = None
+    name: str 
     symbol: Optional[str] = None
     description: Optional[str] = None
     is_enabled: bool = False
@@ -43,7 +43,6 @@ class ProviderUpdate(BaseModel):
     auth_details: Optional[Dict] = None
 
 class Provider(ProviderBase):
-    id: int
-
+    id: str
     class ConfigDict:
         from_attributes = True

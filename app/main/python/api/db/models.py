@@ -7,7 +7,7 @@ class Provider(Base): # type: ignore
     """
     __tablename__ = "providers"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(String, primary_key=True, index=True)
     name = Column(String, unique=True, index=True, nullable=False)
     api_url = Column(String, nullable=False)
     auth_method = Column(String, nullable=False)

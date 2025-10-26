@@ -55,15 +55,15 @@ def test_read_provider(test_client: TestClient, db_session: Session):
     db_session.add(provider)
     db_session.commit()
 
-    response = test_client.get(f"/providers/{provider.id}")
+    response = test_client.get(f"/providers/{provider.name}")
     assert response.status_code == 200
     data = response.json()
     assert data["name"] == "TestProvider"
     assert data["id"] == provider.id
 
 def test_read_nonexistent_provider(test_client: TestClient):
-    """Test that reading a non-existent provider returns a 404."""
-    response = test_client.get("/providers/999")
+    """Test that reading a non-existent provider by name returns a 404."""
+    response = test_client.get("/providers/non-existent-provider")
     assert response.status_code == 404
 
 def test_set_default_provider(test_client: TestClient, db_session: Session):
@@ -76,7 +76,7 @@ def test_set_default_provider(test_client: TestClient, db_session: Session):
     db_session.refresh(p2)
 
     # Set p2 as the new default
-    response = test_client.post(f"/providers/{p2.id}/set-default")
+    response = test_client.post(f"/providers/{p2.name}/set-default")
     assert response.status_code == 200
     assert response.json()["is_default"] is True
 
@@ -93,7 +93,7 @@ def test_update_provider(test_client: TestClient, db_session: Session):
     db_session.commit()
 
     response = test_client.put(
-        f"/providers/{provider.id}",
+        f"/providers/{provider.name}",
         json={"api_url": "updated_url"},
     )
     assert response.status_code == 200
@@ -106,11 +106,11 @@ def test_delete_provider(test_client: TestClient, db_session: Session):
     provider = models.Provider(name="ToDelete", api_url="...", auth_method="none")
     db_session.add(provider)
     db_session.commit()
-    provider_id = provider.id
+    provider_name = provider.name
 
-    response = test_client.delete(f"/providers/{provider_id}")
+    response = test_client.delete(f"/providers/{provider_name}")
     assert response.status_code == 204
 
     # Verify it's gone from the database
-    deleted_provider = db_session.query(models.Provider).filter_by(id=provider_id).first()
+    deleted_provider = db_session.query(models.Provider).filter_by(name=provider_name).first()
     assert deleted_provider is None
