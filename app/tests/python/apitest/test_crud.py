@@ -14,22 +14,25 @@ def test_create_provider(db_session: Session):
                                              auth_method="none",
                                              is_default=False
                                              )
+   
     provider = providers.create_provider(db_session, provider_schema)
     assert getattr(provider, "name") == "TestProvider"
     assert getattr(provider, "api_url") == "http://test.com"
+    assert hasattr(provider, "id")
+    assert isinstance(provider.id, str) and len(provider.id) == 36 # UUID4 string length
 
 
 
 def test_get_providers(db_session: Session):
-    db_session.add(models.Provider(name="P1", api_url="..."))
-    db_session.add(models.Provider(name="P2", api_url="..."))
+    db_session.add(models.Provider(name="P1", api_url="http://binance.com"))
+    db_session.add(models.Provider(name="P2", api_url="http://coingecko.com"))
     db_session.commit()
     
     all_providers = providers.get_providers(db_session)
     assert len(all_providers) == 2
 
 def test_get_provider_by_name(db_session: Session):
-    db_session.add(models.Provider(name="FindMe", api_url="..."))
+    db_session.add(models.Provider(name="FindMe", api_url="http://binance.com"))
     db_session.commit()
 
     provider = providers.get_provider_by_name(db_session, "FindMe")
@@ -37,8 +40,8 @@ def test_get_provider_by_name(db_session: Session):
 
 
 def test_set_default_provider(db_session: Session):
-    p1 = models.Provider(name="P1", api_url="...", is_default=True)
-    p2 = models.Provider(name="P2", api_url="...", is_default=False)
+    p1 = models.Provider(name="P1", api_url="some_url", is_default=True)
+    p2 = models.Provider(name="P2", api_url="some_url", is_default=False)
     db_session.add_all([p1, p2])
     db_session.commit()
 
@@ -76,9 +79,9 @@ def test_delete_provider(db_session: Session):
 # --- Token CRUD Tests ---
 
 def test_create_token(db_session: Session):
-    token_schema = schemas.TokenCreate(id="bitcoin", name="Bitcoin", is_enabled=True)
+    token_schema = schemas.TokenCreate(id="btc", name="Bitcoin", is_enabled=True)
     token = tokens.create_token(db_session, token_schema)
-    assert getattr(token, "id") == "bitcoin"
+    assert getattr(token, "id") == "btc"
     assert getattr(token, "name") == "Bitcoin"
     assert token.is_enabled is True
     assert db_session.query(models.Token).count() == 1
@@ -91,7 +94,7 @@ def test_get_enabled_tokens(db_session: Session):
     db_session.commit()
 
     enabled = tokens.get_enabled_tokens(db_session)
-    enabled_ids = {token.id for token in enabled}
+    enabled_ids = {token for token in enabled}
     assert enabled_ids == {"btc", "ada"}
 
 def test_update_token(db_session: Session):

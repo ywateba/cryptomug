@@ -4,3 +4,4 @@
 ./app/.coverage
 ./app/.tox
 ./app/.commons.egg-info
+test.db

@@ -3,7 +3,9 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from api.db.database import Base
+from api.main import app
+from api.db.database import get_db
+from api.db.models import Base
 
 
 # Use an in-memory SQLite database for testing
