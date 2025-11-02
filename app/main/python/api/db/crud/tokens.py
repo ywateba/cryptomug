@@ -29,7 +29,7 @@ def get_enabled_tokens(db: Session, skip: int = 0, limit: int = 100):
 def create_token(db: Session, token: schemas.TokenCreate):
     # The 'is_enabled' flag from the create schema is respected here.
  
-    db_token = Token(**token.dict())
+    db_token = Token(**token.model_dump())
     logger.info(f"Creating new token: {token.id}")    
     try:
         db.add(db_token)

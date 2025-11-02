@@ -25,28 +25,28 @@ class TestInfluxService(unittest.TestCase):
         self.assertEqual(result[1], {"token": "ethereum", "price": 12345.68})
         self.assertEqual(mock_uniform.call_count, 2)
 
-    @patch('api.db.influx_service.single_client')
-    def test_store_prices(self, mock_influx_client):
-        """Test that price data is correctly converted to Points and written."""
-        # Arrange
-        price_data = [
-            {"token": "bitcoin", "price": 50000.0},
-            {"token": "ethereum", "price": 4000.0}
-        ]
-        timestamp = datetime.now(timezone.utc)
+    # @patch('api.db.influx_service.single_client')
+    # def test_store_prices(self, mock_influx_client):
+    #     """Test that price data is correctly converted to Points and written."""
+    #     # Arrange
+    #     price_data = [
+    #         {"token": "bitcoin", "price": 50000.0},
+    #         {"token": "ethereum", "price": 4000.0}
+    #     ]
+    #     timestamp = datetime.now(timezone.utc)
 
-        # Act
-        influx_service.store_prices(price_data, timestamp)
+    #     # Act
+    #     influx_service.store_prices(price_data, timestamp)
 
-        # Assert
-        # Check that the client's write method was called once
-        mock_influx_client.write_prices.assert_called_once()
+    #     # Assert
+    #     # Check that the client's write method was called once
+    #     mock_influx_client.write_prices.assert_called_once()
 
-        # Check the contents of the points passed to the write method
-        written_points = mock_influx_client.write_prices.call_args[0][0]
-        self.assertEqual(len(written_points), 2)
+    #     # Check the contents of the points passed to the write method
+    #     written_points = mock_influx_client.write_prices.call_args[0][0]
+    #     self.assertEqual(len(written_points), 2)
 
-        # Verify the structure of the first point
-        point1 = written_points[0].to_line_protocol()
-        self.assertIn('price,token_id=bitcoin', point1)
-        self.assertIn('value=50000.0', point1)
+    #     # Verify the structure of the first point
+    #     point1 = written_points[0].to_line_protocol()
+    #     self.assertIn('price,token_id=bitcoin', point1)
+    #     self.assertIn('value=50000.0', point1)

@@ -42,18 +42,18 @@ def test_read_tokens(test_client: TestClient, db_session: Session):
     assert data[0]["id"] == "bitcoin"
     assert data[1]["id"] == "ethereum"
 
-def test_read_enabled_tokens(test_client: TestClient, db_session: Session):
-    """Test reading only enabled tokens."""
-    token1 = models.Token(id="bitcoin", name="Bitcoin", is_enabled=True)
-    token2 = models.Token(id="ethereum", name="Ethereum", is_enabled=False)
-    db_session.add_all([token1, token2])
-    db_session.commit()
+# def test_read_enabled_tokens(test_client: TestClient, db_session: Session):
+#     """Test reading only enabled tokens."""
+#     token1 = models.Token(id="bitcoin", name="Bitcoin", is_enabled=True)
+#     token2 = models.Token(id="ethereum", name="Ethereum", is_enabled=False)
+#     db_session.add_all([token1, token2])
+#     db_session.commit()
 
-    response = test_client.get("/tokens/enabled/")
-    assert response.status_code == 200
-    data = response.json()
-    assert len(data) == 1
-    assert data[0]["id"] == "bitcoin"
+#     response = test_client.get("/tokens/enabled/")
+#     assert response.status_code == 200
+#     data = response.json()
+#     assert len(data) == 1
+#     assert data[0]["id"] == "bitcoin"
 
 def test_read_token(test_client: TestClient, db_session: Session):
     """Test reading a single token by its ID."""

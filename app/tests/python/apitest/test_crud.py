@@ -40,8 +40,8 @@ def test_get_provider_by_name(db_session: Session):
 
 
 def test_set_default_provider(db_session: Session):
-    p1 = models.Provider(name="P1", api_url="some_url", is_default=True)
-    p2 = models.Provider(name="P2", api_url="some_url", is_default=False)
+    p1 = models.Provider(name="P1", api_url="some_url_1", is_default=True)
+    p2 = models.Provider(name="P2", api_url="some_url_2", is_default=False)
     db_session.add_all([p1, p2])
     db_session.commit()
 
