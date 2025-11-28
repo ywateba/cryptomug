@@ -1,0 +1,17 @@
+requests
+timecode
+dataclasses
+jmespath
+boto3
+
+[test]
+mock
+pytest
+mockito
+moto
+pytest-cov
+pytest-sugar
+requests_mock
+behave
+pyHamcrest
+boto3_mocking
